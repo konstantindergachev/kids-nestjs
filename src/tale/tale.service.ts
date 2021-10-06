@@ -11,6 +11,6 @@ export class TaleService {
   ) {}
 
   findAll() {
-    return 'Response from findAll service';
+    return this.taleRepository.find();
   }
 }
