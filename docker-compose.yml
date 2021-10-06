@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: infant_db
+    image: 'postgres:12.3'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: infant_db
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    restart: always
+    volumes:
+      - nps_data:/var/lib/postgresql/data
+  adminer:
+    image: adminer:4.8.1
+    restart: always
+    environment:
+      ADMINER_DESIGN: dracula
+    ports:
+      - 8889:8080
+
+volumes:
+  nps_data: {}
