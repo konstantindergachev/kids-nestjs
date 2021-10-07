@@ -1,5 +1,4 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ITaleProperties } from './interfaces/tale.interface';
 
 @Entity({ name: 'tales' })
 export class TaleEntity {
@@ -15,8 +14,8 @@ export class TaleEntity {
   @Column({ default: '' })
   description: string;
 
-  @Column({ type: 'jsonb' })
-  properties: ITaleProperties;
+  @Column('jsonb', { nullable: true })
+  couplets: object[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
