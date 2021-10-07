@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
+import { ITaleProperties } from '../interfaces/tale.interface';
 
 export class CreateTaleDto {
   @IsString()
@@ -10,5 +11,5 @@ export class CreateTaleDto {
   readonly description: string;
 
   @IsNotEmpty()
-  readonly body: string[];
+  readonly properties: ITaleProperties;
 }
