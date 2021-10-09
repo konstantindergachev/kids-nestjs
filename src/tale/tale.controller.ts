@@ -5,7 +5,8 @@ import { TaleService } from './tale.service';
 export class TaleController {
   constructor(private readonly taleService: TaleService) {}
   @Get()
-  findAll() {
-    return this.taleService.findAll();
+  async findAll() {
+    const tales = await this.taleService.findAll();
+    return tales;
   }
 }

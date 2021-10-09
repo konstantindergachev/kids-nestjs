@@ -7,6 +7,10 @@ export class CreateTaleDto {
 
   @IsString()
   @IsNotEmpty()
+  readonly artist: string;
+
+  @IsString()
+  @IsNotEmpty()
   readonly description: string;
 
   @IsNotEmpty()

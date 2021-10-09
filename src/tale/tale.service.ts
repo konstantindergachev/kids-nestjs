@@ -10,7 +10,7 @@ export class TaleService {
     private readonly taleRepository: Repository<TaleEntity>,
   ) {}
 
-  findAll() {
-    return this.taleRepository.find();
+  async findAll() {
+    return await this.taleRepository.find();
   }
 }

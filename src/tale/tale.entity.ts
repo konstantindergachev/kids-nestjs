@@ -11,6 +11,9 @@ export class TaleEntity {
   @Column()
   title: string;
 
+  @Column()
+  artist: string;
+
   @Column({ default: '' })
   description: string;
 

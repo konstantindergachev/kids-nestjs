@@ -6,12 +6,12 @@ export class SeedDb1633613527697 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `INSERT INTO "tales"
-       (slug, title, description, couplets) VALUES
+       (slug, title, description, couplets, artist) VALUES
        (
          'cockroach', 'тараканище', 'веселая сказка про таракана', '[
             {
               "images": ["https://res.cloudinary.com/nephewfedor/image/upload/v1633606246/cockroach/1_cockroach_izufxk.png", "https://res.cloudinary.com/nephewfedor/image/upload/v1633606246/cockroach/2_cockroach_lysrtv.png"],
-              "text": ["Тараканище", "Художник П. Репин"]
+              "text": ["Тараканище"]
             },
             {
               "images": ["https://res.cloudinary.com/nephewfedor/image/upload/v1633606246/cockroach/3_cockroach_oigw3o.png"],
@@ -209,7 +209,7 @@ export class SeedDb1633613527697 implements MigrationInterface {
               "images": ["https://res.cloudinary.com/nephewfedor/image/upload/v1633606252/cockroach/51_cockroach_rdg0qn.png"],
               "text": ["Конец"]
             }
-          ]'
+          ]', 'художник П. Репин'
         )
       `,
     );

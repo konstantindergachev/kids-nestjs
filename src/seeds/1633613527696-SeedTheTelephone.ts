@@ -6,11 +6,15 @@ export class SeedDb1633613527696 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `INSERT INTO "tales"
-       (slug, title, description, couplets) VALUES
+       (slug, title, description, couplets, artist) VALUES
        (
          'the-telephone', 'телефон', 'детская сказка про телефон', '[
             {
-              "images": ["https://res.cloudinary.com/nephewfedor/image/upload/v1633606284/thetelephone/1_the_t_wkpxul.png", "https://res.cloudinary.com/nephewfedor/image/upload/v1633606285/thetelephone/2_the_t_aqsgfj.png"],
+              "images": ["https://res.cloudinary.com/nephewfedor/image/upload/v1633606284/thetelephone/1_the_t_wkpxul.png"],
+              "text": ["Телефон"]
+            },
+            {
+              "images": ["https://res.cloudinary.com/nephewfedor/image/upload/v1633606285/thetelephone/2_the_t_aqsgfj.png"],
               "text": ["У меня зазвонил телефон.", "– Кто говорит?", "– Слон.", "– Откуда?", "– От верблюда.", "– Что вам надо?", "– Шоколада.", "– Для кого?", "– Для сына моего.", "– А много ли прислать?", "– Да пудов этак пять", "Или шесть:", "Больше ему не съесть,", "Он у меня еще маленький!"]
             },
             {
@@ -61,7 +65,7 @@ export class SeedDb1633613527696 implements MigrationInterface {
               "images": ["https://res.cloudinary.com/nephewfedor/image/upload/v1633606286/thetelephone/15_the_t_nz8bbq.png"],
               "text": ["Ох, нелёгкая это работа —", "Из болота тащить бегемота!"]
             }
-          ]'
+          ]', 'художник В. Конашевич'
         )
       `,
     );
