@@ -4,9 +4,10 @@ import ormconfig from '@app/ormconfig';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaleModule } from './tale/tale.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormconfig), TaleModule],
+  imports: [TypeOrmModule.forRoot(ormconfig), TaleModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
