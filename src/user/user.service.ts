@@ -2,11 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 import { IUserResponse } from './interfaces/user-response.interface';
-import { EMAIL_TAKEN_ERROR } from './user.constants';
+import { EMAIL_TAKEN_ERROR, CREDENTIALS_ERROR } from './user.constants';
 import { UserEntity } from './user.entity';
-import { sign } from 'jsonwebtoken';
 import { JWT_SECRET } from '@app/config';
+import { sign } from 'jsonwebtoken';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -18,9 +20,7 @@ export class UserService {
   buildUserResponse(user: UserEntity): IUserResponse {
     return {
       user: {
-        id: user.id,
-        firstname: user.firstname,
-        email: user.email,
+        ...user,
         token: this.generateJWT(user),
       },
     };
@@ -47,6 +47,40 @@ export class UserService {
     const newUser = new UserEntity();
     Object.assign(newUser, createUserDto);
 
-    return await this.userRepository.save(newUser);
+    const user = await this.userRepository.save(newUser);
+
+    delete user.password;
+    return user;
+  }
+
+  async loginUser(loginUserDto: LoginUserDto): Promise<UserEntity> {
+    const errorResponse = {
+      errors: { 'email or password': CREDENTIALS_ERROR },
+    };
+
+    const user = await this.userRepository.findOne(
+      {
+        email: loginUserDto.email,
+      },
+      {
+        select: ['id', 'firstname', 'email', 'password', 'image'],
+      },
+    );
+
+    if (!user) {
+      throw new HttpException(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    const isPasswordCorrect = await compare(
+      loginUserDto.password,
+      user.password,
+    );
+
+    if (!isPasswordCorrect) {
+      throw new HttpException(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    delete user.password;
+    return user;
   }
 }

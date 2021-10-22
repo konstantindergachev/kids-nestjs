@@ -1,3 +1,5 @@
+import { UserType } from '../types/user.type';
+
 export interface IUserResponse {
-  user: { id: number; firstname: string; email: string; token: string };
+  user: UserType & { token: string };
 }
