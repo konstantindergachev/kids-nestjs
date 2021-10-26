@@ -6,6 +6,10 @@ import { TaleService } from './tale.service';
 @Controller('tales')
 export class TaleController {
   constructor(private readonly taleService: TaleService) {}
+  @Get('first-pages')
+  async findAllFirstPages(): Promise<ITalesResponse> {
+    return await this.taleService.findAllFirstPages();
+  }
   @Get()
   async findAll(): Promise<ITalesResponse> {
     return await this.taleService.findAll();

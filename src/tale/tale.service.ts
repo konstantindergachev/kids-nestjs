@@ -16,6 +16,20 @@ export class TaleService {
     return { tale };
   }
 
+  async findAllFirstPages(): Promise<ITalesResponse> {
+    const tales = await this.taleRepository.find({
+      select: ['id', 'slug', 'title', 'artist', 'description', 'couplets'],
+    });
+    const updTales = tales.map((tale) => {
+      if (tale.couplets) {
+        tale.couplets = tale.couplets.slice(0, 1);
+        return tale;
+      }
+      return tale;
+    });
+    return { tales: updTales };
+  }
+
   async findAll(): Promise<ITalesResponse> {
     const tales = await this.taleRepository.find();
     return { tales };
