@@ -55,7 +55,7 @@ export class UserService {
 
   async loginUser(loginUserDto: LoginUserDto): Promise<UserEntity> {
     const errorResponse = {
-      errors: { 'email or password': CREDENTIALS_ERROR },
+      errors: { message: CREDENTIALS_ERROR },
     };
 
     const user = await this.userRepository.findOne(
@@ -63,7 +63,7 @@ export class UserService {
         email: loginUserDto.email,
       },
       {
-        select: ['id', 'firstname', 'email', 'password', 'image'],
+        select: ['id', 'firstname', 'lastname', 'email', 'password', 'image'],
       },
     );
 
