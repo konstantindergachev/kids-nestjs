@@ -3,11 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { IUserResponse } from './interfaces/user-response.interface';
 import { EMAIL_TAKEN_ERROR, CREDENTIALS_ERROR } from './user.constants';
 import { UserEntity } from './user.entity';
-import { JWT_SECRET } from '@app/config';
-import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 
 @Injectable()
@@ -16,21 +13,6 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
-
-  buildUserResponse(user: UserEntity): IUserResponse {
-    return {
-      user: {
-        ...user,
-        token: this.generateJWT(user),
-      },
-    };
-  }
-  generateJWT(user: UserEntity): string {
-    return sign(
-      { id: user.id, firstname: user.firstname, email: user.email },
-      JWT_SECRET,
-    );
-  }
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const errorsResponse = { errors: {} };
