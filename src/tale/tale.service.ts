@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ITaleResponse } from './interfaces/tale.interface';
 import { TaleEntity } from './tale.entity';
 
 @Injectable()
@@ -10,10 +9,6 @@ export class TaleService {
     @InjectRepository(TaleEntity)
     private readonly taleRepository: Repository<TaleEntity>,
   ) {}
-
-  buildTaleResponce(tale: TaleEntity): ITaleResponse {
-    return { tale };
-  }
 
   async findAllFirstPages(): Promise<TaleEntity[]> {
     const tales = await this.taleRepository.find({

@@ -27,8 +27,12 @@ export class TaleController {
   }
   @Get(':slug')
   @UseGuards(AuthGuard)
-  async findOneBySlug(@Param('slug') slug: string): Promise<ITaleResponse> {
+  async findOneBySlug(
+    @Param('slug') slug: string,
+    @Req() req: IExpressRequest,
+  ): Promise<ITaleResponse> {
+    const username = `${req.user.firstname} ${req.user.lastname}`;
     const tale = await this.taleService.findOneBySlug(slug);
-    return this.taleService.buildTaleResponce(tale);
+    return { tale, username };
   }
 }
