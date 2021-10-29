@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ITaleResponse } from './interfaces/tale.interface';
-import { ITalesResponse } from './interfaces/tales.interface';
 import { TaleEntity } from './tale.entity';
 
 @Injectable()
@@ -16,7 +15,7 @@ export class TaleService {
     return { tale };
   }
 
-  async findAllFirstPages(): Promise<ITalesResponse> {
+  async findAllFirstPages(): Promise<TaleEntity[]> {
     const tales = await this.taleRepository.find({
       select: ['id', 'slug', 'title', 'artist', 'description', 'couplets'],
     });
@@ -27,12 +26,12 @@ export class TaleService {
       }
       return tale;
     });
-    return { tales: updTales };
+    return updTales;
   }
 
-  async findAll(): Promise<ITalesResponse> {
+  async findAll(): Promise<TaleEntity[]> {
     const tales = await this.taleRepository.find();
-    return { tales };
+    return tales;
   }
 
   async findOneBySlug(slug: string): Promise<TaleEntity> {
