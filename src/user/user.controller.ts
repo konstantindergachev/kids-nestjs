@@ -1,11 +1,11 @@
-import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { IUserResponse } from './interfaces/user-response.interface';
+import { IUserRegisterResponse } from './interfaces/user-response.interface';
 import { UserService } from './user.service';
-import { IExpressRequest } from '@app/interfaces/express-request.interface';
 import { generateJWT } from './utils';
 import { UserEntity } from './user.entity';
+import { REGISTRATION_SUCCESS } from './user.constants';
 
 @Controller('users')
 export class UserController {
@@ -13,20 +13,15 @@ export class UserController {
 
   @Post('/')
   async createUser(
-    @Req() { res }: IExpressRequest,
     @Body() createUserDto: CreateUserDto,
-  ): Promise<IUserResponse> {
-    const user = await this.userService.createUser(createUserDto);
-    const token = this.preUserResponse(user);
-    return { user: { ...user, token } };
+  ): Promise<IUserRegisterResponse> {
+    await this.userService.createUser(createUserDto);
+    return { success: true, message: REGISTRATION_SUCCESS };
   }
 
   @Post('/login')
   @HttpCode(200)
-  async loginUser(
-    @Req() { res }: IExpressRequest,
-    @Body() loginUserDto: LoginUserDto,
-  ) {
+  async loginUser(@Body() loginUserDto: LoginUserDto) {
     const user = await this.userService.loginUser(loginUserDto);
     const token = this.preUserResponse(user);
     return { user: { ...user, token } };
