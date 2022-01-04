@@ -6,9 +6,15 @@ import { AppService } from './app.service';
 import { TaleModule } from './tale/tale.module';
 import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { LetterModule } from './letter/letter.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormconfig), TaleModule, UserModule],
+  imports: [
+    TypeOrmModule.forRoot(ormconfig),
+    TaleModule,
+    UserModule,
+    LetterModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
