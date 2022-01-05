@@ -5,7 +5,8 @@ import { IUserRegisterResponse } from './interfaces/user-response.interface';
 import { UserService } from './user.service';
 import { generateJWT } from './utils';
 import { UserEntity } from './user.entity';
-import { REGISTRATION_SUCCESS } from './user.constants';
+import { REGISTRATION_SUCCESS, SEND_NEWS_MESSAGE } from './user.constants';
+import { NewsUserDto } from './dto/news-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -25,6 +26,12 @@ export class UserController {
     const user = await this.userService.loginUser(loginUserDto);
     const token = this.preUserResponse(user);
     return { user: { ...user, token } };
+  }
+  @Post('/news')
+  @HttpCode(200)
+  async sendNews(@Body() newsUserDto: NewsUserDto) {
+    await this.userService.sendNewsLetter(newsUserDto);
+    return { success: true, message: SEND_NEWS_MESSAGE };
   }
 
   private preUserResponse(user: UserEntity): string {

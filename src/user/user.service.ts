@@ -1,17 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MailerService } from '@nestjs-modules/mailer';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { EMAIL_TAKEN_ERROR, CREDENTIALS_ERROR } from './user.constants';
 import { UserEntity } from './user.entity';
 import { compare } from 'bcrypt';
+import { NewsUserDto } from './dto/news-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly mailerService: MailerService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -68,5 +71,23 @@ export class UserService {
 
   async findById(id: number): Promise<UserEntity> {
     return this.userRepository.findOne(id);
+  }
+
+  async sendNewsLetter(newsUserDto: NewsUserDto) {
+    return await this.mailerService
+      .sendMail({
+        to: newsUserDto.email,
+        subject: 'Подтверждение согласия на новостную рассылку',
+        template: 'index',
+        context: {
+          email: newsUserDto.email,
+        },
+      })
+      .catch((e) => {
+        throw new HttpException(
+          `Ошибка работы почты: ${JSON.stringify(e)}`,
+          HttpStatus.UNPROCESSABLE_ENTITY,
+        );
+      });
   }
 }
