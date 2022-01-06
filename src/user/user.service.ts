@@ -48,7 +48,7 @@ export class UserService {
         email: loginUserDto.email,
       },
       {
-        select: ['id', 'firstname', 'lastname', 'email', 'password', 'image'],
+        select: ['id', 'firstname', 'lastname', 'email', 'password'],
       },
     );
 

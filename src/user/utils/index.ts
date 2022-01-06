@@ -1,4 +1,4 @@
-import { JWT_SECRET } from '@app/config';
+import { JWT_SECRET } from '@app/configs/jwttokenconfig';
 import { sign } from 'jsonwebtoken';
 import { UserEntity } from '../user.entity';
 

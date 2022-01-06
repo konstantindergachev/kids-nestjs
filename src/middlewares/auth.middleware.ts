@@ -3,7 +3,7 @@ import { UserService } from '@app/user/user.service';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
-import { JWT_SECRET } from '../config';
+import { JWT_SECRET } from '@app/configs/jwttokenconfig';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
