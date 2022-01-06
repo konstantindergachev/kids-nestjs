@@ -10,6 +10,7 @@ import { LetterModule } from './letter/letter.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import mailconfig from './mailconfig';
 import { ConfigModule } from '@nestjs/config';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ConfigModule } from '@nestjs/config';
     MailerModule.forRootAsync({
       useFactory: mailconfig,
     }),
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

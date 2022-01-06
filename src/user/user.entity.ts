@@ -1,5 +1,13 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { hash } from 'bcrypt';
+import { ProfileEntity } from '@app/profile/profile.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -15,11 +23,12 @@ export class UserEntity {
   @Column()
   email: string;
 
-  @Column({ default: '' })
-  image: string;
-
   @Column()
   password: string;
+
+  @OneToOne(() => ProfileEntity, (profile) => profile.user)
+  @JoinColumn()
+  profile: ProfileEntity;
 
   @BeforeInsert()
   async hashPassword() {
