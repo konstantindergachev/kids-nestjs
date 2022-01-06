@@ -14,5 +14,6 @@ export class CreateTaleDto {
   readonly description: string;
 
   @IsNotEmpty()
+  // eslint-disable-next-line @typescript-eslint/ban-types
   readonly properties: object[];
 }

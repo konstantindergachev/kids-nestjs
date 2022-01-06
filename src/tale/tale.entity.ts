@@ -18,6 +18,7 @@ export class TaleEntity {
   description: string;
 
   @Column('jsonb', { nullable: true })
+  // eslint-disable-next-line @typescript-eslint/ban-types
   couplets: object[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
