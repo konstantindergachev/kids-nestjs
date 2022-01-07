@@ -8,6 +8,7 @@ import { EMAIL_TAKEN_ERROR, CREDENTIALS_ERROR } from './user.constants';
 import { UserEntity } from './user.entity';
 import { compare } from 'bcrypt';
 import { NewsUserDto } from './dto/news-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -89,5 +90,9 @@ export class UserService {
           HttpStatus.UNPROCESSABLE_ENTITY,
         );
       });
+  }
+
+  async updateUser(updateUserDto: UpdateUserDto): Promise<UserEntity> {
+    return await this.userRepository.save(updateUserDto);
   }
 }

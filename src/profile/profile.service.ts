@@ -1,5 +1,6 @@
 import { IMAGE_UPLOAD_ERROR } from '@app/cloudinary/cloudinary.constants';
 import { CloudinaryService } from '@app/cloudinary/cloudinary.service';
+import { UserService } from '@app/user/user.service';
 import {
   BadRequestException,
   HttpException,
@@ -19,6 +20,7 @@ export class ProfileService {
     private readonly cloudinaryService: CloudinaryService,
     @InjectRepository(ProfileEntity)
     private readonly profileRepository: Repository<ProfileEntity>,
+    private readonly userService: UserService,
   ) {}
 
   async uploadImage(file: Express.Multer.File) {
@@ -33,6 +35,7 @@ export class ProfileService {
 
   async createProfile(
     createProfileDto: CreateProfileDto,
+    currentUserId: number,
   ): Promise<ProfileEntity> {
     const errorsResponse = { errors: {} };
 
@@ -47,8 +50,13 @@ export class ProfileService {
 
     const newProfile = new ProfileEntity();
     Object.assign(newProfile, { ...createProfileDto, photo: this.url });
-
     const profile = await this.profileRepository.save(newProfile);
+
+    const user = await this.userService.findById(currentUserId);
+    user.profile = profile;
+
+    await this.userService.updateUser(user);
+
     return profile;
   }
 }
