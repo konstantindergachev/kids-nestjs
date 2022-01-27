@@ -10,7 +10,10 @@ export class ProfileEntity {
   gender: string;
 
   @Column({ default: '' })
-  photo: string;
+  photo_url: string;
+
+  @Column({ default: '' })
+  photo_public_id: string;
 
   @Column()
   phone: string;

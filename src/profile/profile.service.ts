@@ -17,6 +17,7 @@ import { ProfileEntity } from './profile.entity';
 @Injectable()
 export class ProfileService {
   private url: string;
+  private public_id: string;
   constructor(
     private readonly cloudinaryService: CloudinaryService,
     @InjectRepository(ProfileEntity)
@@ -28,6 +29,7 @@ export class ProfileService {
     try {
       const uploadedData = await this.cloudinaryService.uploadImage(file);
       this.url = uploadedData?.url;
+      this.public_id = uploadedData?.public_id;
       return file;
     } catch (error) {
       throw new BadRequestException(IMAGE_UPLOAD_ERROR);
@@ -50,7 +52,11 @@ export class ProfileService {
     }
 
     const newProfile = new ProfileEntity();
-    Object.assign(newProfile, { ...createProfileDto, photo: this.url });
+    Object.assign(newProfile, {
+      ...createProfileDto,
+      photo_url: this.url,
+      photo_public_id: this.public_id,
+    });
     this.url = '';
     const profile = await this.profileRepository.save(newProfile);
 
@@ -60,6 +66,14 @@ export class ProfileService {
     await this.userService.updateUser(currentUserId, user);
 
     return profile;
+  }
+
+  async removeImage(imagePublicId: string) {
+    try {
+      return await this.cloudinaryService.removeImage(imagePublicId);
+    } catch (error) {
+      throw new BadRequestException(IMAGE_UPLOAD_ERROR);
+    }
   }
 
   async updateProfile(
@@ -72,10 +86,15 @@ export class ProfileService {
 
     const newProfile = {
       gender: updateProfileDto.gender,
-      photo: this.url || oldProfile.photo,
+      photo_url: this.url || oldProfile.photo_url,
+      photo_public_id: this.public_id || oldProfile.photo_public_id,
       phone: updateProfileDto.phone || oldProfile.phone,
       address: updateProfileDto.address || oldProfile.address,
     };
+
+    if (this.url || this.public_id) {
+      this.removeImage(oldProfile.photo_public_id);
+    }
 
     await this.profileRepository.update({ id: oldProfile.id }, newProfile);
 

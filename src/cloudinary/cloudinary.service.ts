@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 import toStream = require('buffer-to-stream');
+import { IMAGE_DESTROY_SUCCESS } from './cloudinary.constants';
 
 @Injectable()
 export class CloudinaryService {
@@ -15,5 +16,10 @@ export class CloudinaryService {
 
       toStream(file.buffer).pipe(upload);
     });
+  }
+
+  async removeImage(imagePublicId: string): Promise<string> {
+    await v2.uploader.destroy(imagePublicId);
+    return IMAGE_DESTROY_SUCCESS;
   }
 }
