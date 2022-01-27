@@ -71,7 +71,12 @@ export class UserService {
   }
 
   async findById(id: number): Promise<UserEntity> {
-    return this.userRepository.findOne(id);
+    const user = await this.userRepository.findOne(
+      { id },
+      { relations: ['profile'] },
+    );
+    delete user.password;
+    return user;
   }
 
   async sendNewsLetter(newsUserDto: NewsUserDto) {
