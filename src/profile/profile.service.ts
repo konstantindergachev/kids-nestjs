@@ -58,6 +58,7 @@ export class ProfileService {
       photo_public_id: this.public_id,
     });
     this.url = '';
+    this.public_id = '';
     const profile = await this.profileRepository.save(newProfile);
 
     const user = await this.userService.findById(currentUserId);
