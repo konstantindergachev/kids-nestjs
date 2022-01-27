@@ -13,10 +13,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
   FILE_UPLOAD_SUCCESS,
   PROFILE_CREATED_SUCCESS,
+  PROFILE_UPDATED_SUCCESS,
 } from './profile.constants';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { User } from '@app/user/decorators/user.decorator';
 import { UserService } from '@app/user/user.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('profiles')
 export class ProfileController {
@@ -46,5 +48,15 @@ export class ProfileController {
   ) {
     await this.profileService.createProfile(createProfileDto, currentUserId);
     return { success: true, message: PROFILE_CREATED_SUCCESS };
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/edit')
+  async updateProfile(
+    @Body() updateProfileDto: UpdateProfileDto,
+    @User('id') currentUserId: number,
+  ) {
+    await this.profileService.updateProfile(updateProfileDto, currentUserId);
+    return { success: true, message: PROFILE_UPDATED_SUCCESS };
   }
 }

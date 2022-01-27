@@ -75,7 +75,6 @@ export class UserService {
       { id },
       { relations: ['profile'] },
     );
-    delete user.password;
     return user;
   }
 
@@ -97,7 +96,10 @@ export class UserService {
       });
   }
 
-  async updateUser(updateUserDto: UpdateUserDto): Promise<UserEntity> {
-    return await this.userRepository.save(updateUserDto);
+  async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(
+      { id: currentUserId },
+      updateUserDto,
+    );
   }
 }
