@@ -1,6 +1,6 @@
 import { UserType } from '../types/user.type';
 
-export interface IUserRegisterResponse {
+export interface IUserSuccessResponse {
   success: boolean;
   message: string;
 }
