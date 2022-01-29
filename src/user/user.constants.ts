@@ -8,3 +8,4 @@ export const MAX_AGE = 60 * 60 * 8; //8 hours
 export const REGISTRATION_SUCCESS =
   'Вы зарегистрированы! Нажмите кнопку войти. Введите созданные email и пароль.';
 export const SEND_NEWS_MESSAGE = 'На указанный емайл отправленно сообщение.';
+export const USER_UPDATED_SUCCESS = 'Пользователь успешно обновлен';

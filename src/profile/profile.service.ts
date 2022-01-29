@@ -1,4 +1,8 @@
-import { IMAGE_UPLOAD_ERROR } from '@app/cloudinary/cloudinary.constants';
+import {
+  IMAGE_DESTROY_SUCCESS,
+  IMAGE_SAVED_SUCCESS,
+  IMAGE_UPLOAD_ERROR,
+} from '@app/cloudinary/cloudinary.constants';
 import { CloudinaryService } from '@app/cloudinary/cloudinary.service';
 import { UserService } from '@app/user/user.service';
 import {
@@ -25,12 +29,12 @@ export class ProfileService {
     private readonly userService: UserService,
   ) {}
 
-  async uploadImage(file: Express.Multer.File) {
+  async uploadImage(file: Express.Multer.File): Promise<string> {
     try {
       const uploadedData = await this.cloudinaryService.uploadImage(file);
       this.url = uploadedData?.url;
       this.public_id = uploadedData?.public_id;
-      return file;
+      return IMAGE_SAVED_SUCCESS;
     } catch (error) {
       throw new BadRequestException(IMAGE_UPLOAD_ERROR);
     }
@@ -69,9 +73,10 @@ export class ProfileService {
     return profile;
   }
 
-  async removeImage(imagePublicId: string) {
+  async removeImage(imagePublicId: string): Promise<string> {
     try {
-      return await this.cloudinaryService.removeImage(imagePublicId);
+      await this.cloudinaryService.removeImage(imagePublicId);
+      return IMAGE_DESTROY_SUCCESS;
     } catch (error) {
       throw new BadRequestException(IMAGE_UPLOAD_ERROR);
     }

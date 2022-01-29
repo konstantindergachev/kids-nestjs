@@ -4,11 +4,16 @@ import { Repository } from 'typeorm';
 import { MailerService } from '@nestjs-modules/mailer';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { EMAIL_TAKEN_ERROR, CREDENTIALS_ERROR } from './user.constants';
+import {
+  EMAIL_TAKEN_ERROR,
+  CREDENTIALS_ERROR,
+  USER_UPDATED_SUCCESS,
+} from './user.constants';
 import { UserEntity } from './user.entity';
 import { compare } from 'bcrypt';
 import { NewsUserDto } from './dto/news-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { IUserSuccessResponse } from './interfaces/user-response.interface';
 
 @Injectable()
 export class UserService {
@@ -96,10 +101,12 @@ export class UserService {
       });
   }
 
-  async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
-    return await this.userRepository.update(
-      { id: currentUserId },
-      updateUserDto,
-    );
+  async updateUser(
+    currentUserId: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<IUserSuccessResponse> {
+    await this.userRepository.update({ id: currentUserId }, updateUserDto);
+
+    return { success: true, message: USER_UPDATED_SUCCESS };
   }
 }
