@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaleModule } from './tale/tale.module';
@@ -9,6 +10,7 @@ import { LetterModule } from './letter/letter.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProfileModule } from './profile/profile.module';
+import { join } from 'path';
 
 import getConfig from '@app/ormconfig';
 import getMailConfig from '@app/configs/mailconfig';
@@ -30,6 +32,9 @@ import getMailConfig from '@app/configs/mailconfig';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) =>
         await getMailConfig(configService),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'build'),
     }),
     ProfileModule,
   ],
