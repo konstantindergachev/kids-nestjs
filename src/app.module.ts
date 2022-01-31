@@ -7,21 +7,29 @@ import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { LetterModule } from './letter/letter.module';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProfileModule } from './profile/profile.module';
 
-import ormconfig from '@app/ormconfig';
-import mailconfig from '@app/configs/mailconfig';
+import getConfig from '@app/ormconfig';
+import getMailConfig from '@app/configs/mailconfig';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) =>
+        await getConfig(configService),
+    }),
     TaleModule,
     UserModule,
     LetterModule,
     MailerModule.forRootAsync({
-      useFactory: mailconfig,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) =>
+        await getMailConfig(configService),
     }),
     ProfileModule,
   ],
