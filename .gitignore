@@ -43,7 +43,6 @@ docker-compose.example.yml
 pgadmin
 
 #ORM Config
-/src/configs/*config.ts
-/src/*config.ts
+/src/ormseedconfig.ts
 
 .env

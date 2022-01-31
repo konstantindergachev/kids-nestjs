@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProfileModule } from './profile/profile.module';
 
 import getConfig from '@app/ormconfig';
-import getMailConfig from '@app/configs/mailconfig';
+import getMailConfig from '@app/mailconfig';
 
 @Module({
   imports: [

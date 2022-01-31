@@ -1,4 +1,4 @@
-import getCloudinaryConfig from '@app/configs/cloudinaryconfig';
+import getCloudinaryConfig from '@app/cloudinaryconfig';
 import { CLOUDINARY } from './cloudinary.constants';
 
 export const CloudinaryProvider = {
