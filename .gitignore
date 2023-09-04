@@ -42,7 +42,4 @@ docker-compose.example.yml
 #pgadmin volume
 pgadmin
 
-#ORM Config
-/src/ormseedconfig.ts
-
 .env
